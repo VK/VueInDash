@@ -42,4 +42,3 @@ def callbackA(input):
 # end dash app
 if __name__ == '__main__':
     app.run_server(host="localhost", debug=True)
-y
