@@ -64,10 +64,14 @@ export default new Vuex.Store({
       axios.post('_dash-update-component',
         {
           "output": call.name + ".output",
-          "inputs": [{ "id": "json-input", "property": "value", "value": call.data }],
-          "changedPropIds": []
+          "inputs": [{ "id": call.name, "property": "input", "value": call.data }],
+          "changedPropIds": [call.name + ".input"]
         }).then(function (response) {
-          context.commit("commit_dash_data", new DashResult(call.name, response.data.response[call.name].output));
+          if ("multi" in response.data && response.data.multi) {
+            context.commit("commit_dash_data", new DashResult(call.name, response.data.response[call.name].output));
+          } else {
+            context.commit("commit_dash_data", new DashResult(call.name, response.data.response.props.output));
+          }
           context.commit("end_loading");
         }).catch(error => {
           console.log(error);
